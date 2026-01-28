@@ -113,13 +113,14 @@ CREATE TABLE movies (
 
 CREATE TABLE actors (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT
+  name TEXT,
+  agent TEXT
 );
 
---CREATE TABLE agents (
---  id INTEGER PRIMARY KEY AUTOINCREMENT,
- -- name TEXT
---);
+CREATE TABLE agents (
+   id INTEGER PRIMARY KEY AUTOINCREMENT,
+   name TEXT
+);
 
 CREATE TABLE roles (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -131,18 +132,60 @@ CREATE TABLE roles (
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
 -- TODO!
+--create movies table
 INSERT INTO movies (title, year, mpaa_rating, studio) VALUES ("Batman Begins","2005","PG-13","Warner Bros
 .");
 INSERT INTO movies (title, year, mpaa_rating, studio) VALUES ("The Dark Knight","2008","PG-13","Warner Bros
 .");
 INSERT INTO movies (title, year, mpaa_rating, studio) VALUES ("The Dark Knight Rises","2012","PG-13","Warner Bros
 .");
+-- create actors table
+INSERT INTO actors (name) VALUES ("Christian Bale");
+INSERT INTO actors (name) VALUES ("Michael Caine");
+INSERT INTO actors (name) VALUES ("Liam Neeson");
+INSERT INTO actors (name) VALUES ("Katie Holmes");
+INSERT INTO actors (name) VALUES ("Gary Oldman");
+INSERT INTO actors (name) VALUES ("Cillian Murphy");
+INSERT INTO actors (name) VALUES ("Heath Ledger");
+INSERT INTO actors (name) VALUES ("Aaron Eckhart");
+INSERT INTO actors (name) VALUES ("Maggie Gyllenhaal");
+INSERT INTO actors (name) VALUES ("Morgan Freeman");
+INSERT INTO actors (name) VALUES ("Anne Hathaway");
+INSERT INTO actors (name) VALUES ("Tom Hardy");
+INSERT INTO actors (name) VALUES ("Joseph Gordon-Levitt");
+-- create agents table
+INSERT INTO agents (name) VALUES ("Nick Stagl");
+-- create roles table
+INSERT INTO roles (movie_id, character, actor_id) VALUES (1, "Bruce Wayne", 1);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (1, "Alfred Pennyworth", 2);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (1, "Ra's al Ghul", 3);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (1, "Rachel Dawes", 4);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (1, "James Gordon", 5);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (1, "Jonathan Crane", 6);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (2, "Bruce Wayne", 1);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (2, "Joker", 7);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (2, "Harvey Dent", 8);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (2, "Rachel Dawes", 9);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (2, "James Gordon", 5);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (2, "Lucius Fox", 10);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (3, "Bruce Wayne", 1);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (3, "Selina Kyle", 11);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (3, "Bane", 12);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (3, "James Gordon", 5);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (3, "Lucius Fox", 10);
+INSERT INTO roles (movie_id, character, actor_id) VALUES (3, "John Blake", 13);
+
+-- Update agent for first actor
+Update actors
+SET agent = "Nick Stagl"
+Where id = 1;
 
 -- Prints a header for the movies output
 .print "Movies"
 .print "======"
 .print ""
 
+SELECT title, year, mpaa_rating, studio FROM movies;
 -- ***TODO!***
 -- The SQL statement for the movies output goes here.
 
@@ -158,6 +201,10 @@ INSERT INTO movies (title, year, mpaa_rating, studio) VALUES ("The Dark Knight R
 .print "Top Cast"
 .print "========"
 .print ""
+
+SELECT movies.title, actors.name, roles.character FROM roles 
+                                            RIGHT JOIN movies ON movies.id = roles.movie_id
+                                            LEFT JOIN actors ON actors.id = roles.actor_id;
 
 -- ***TODO!***
 -- The SQL statement for the cast output goes here.
@@ -186,6 +233,9 @@ INSERT INTO movies (title, year, mpaa_rating, studio) VALUES ("The Dark Knight R
 .print "Represented by agent"
 .print "===================="
 .print ""
+
+SELECT name FROM actors
+WHERE agent IS NOT NULL;
 
 -- ***TODO!***
 -- The SQL statement for the represented actor(s) output goes here.
